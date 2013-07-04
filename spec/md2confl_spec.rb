@@ -12,8 +12,7 @@ end
 describe "Md2confl" do
 
   it "<code>がatlassianのcode block用の書式に変換される" do
-    source = fixture("code.md")
-    confl = Md2confl::Converter.convert(source)
+    confl = Md2confl::Converter.convert(fixture("code.md"))
     expect(confl).to eq fixture("code_confl.xml")
   end
 
@@ -21,5 +20,11 @@ describe "Md2confl" do
     confl = Md2confl::Converter.convert(fixture("table.md"))
     expect(confl).to eq fixture("table_confl.xml")
   end
+
+  it "リスト先頭がtrでないtableの場合、tableタグに変換される" do
+    confl = Md2confl::Converter.convert(fixture("table2.md"))
+    expect(confl).to eq fixture("table2_confl.xml")
+  end
+
 
 end

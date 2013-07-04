@@ -86,7 +86,8 @@ module Md2confl
     # table list置換
     def convert_table_lists()
       tables = @doc.css('ul').select{ |ul|
-        self.get_parent_text(ul.at_css("li")) == "table"
+        li = ul.at_css("li") # TODO ２つの表が結合されるバグあり
+        self.get_parent_text(li) == "table"
       }
 
       tables.each{ |table|
@@ -94,10 +95,12 @@ module Md2confl
       }
     end
 
-    def convert_table(parent)
-      table_array = self.ul_to_array(parent)
+    def convert_table(table_li)
+      table_array = self.ul_to_array(table_li)
       table = self.array_to_table(table_array)
-      parent.replace(table)
+      
+      table_li.replace(table)
+      
     end
 
     def ul_to_array(parent)
@@ -105,9 +108,15 @@ module Md2confl
       # col = {} # TODO: colに名前付けれるようにする。
       row_cnt = 0
       col_cnt = 0
+      name_mode = ["th","tr"].include?(self.get_parent_text(parent.css("ul")))
+
       parent.css("ul ul").each{ |ul|
         col_cnt = 0
         table[row_cnt] = []
+        if not name_mode
+          table[row_cnt][col_cnt] = self.get_parent_text(ul.parent)
+          col_cnt = col_cnt + 1
+        end
         ul.css("li").each{ |li|
           table[row_cnt][col_cnt] = self.get_parent_text(li)
           col_cnt = col_cnt + 1
