@@ -22,6 +22,7 @@ Jeweler::Tasks.new do |gem|
   gem.email = "suisho000000@gmail.com"
   gem.authors = ["suisho"]
   # dependencies defined in Gemfile
+  gem.executables << 'bin/md2confl'
 end
 Jeweler::RubygemsDotOrgTasks.new
 
