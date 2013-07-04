@@ -14,12 +14,14 @@ module Md2confl
       Nokogiri::HTML::DocumentFragment.parse html
     end
 
+    # main converter
     def self.convert(md)
       doc = Converter.get_doc(md)
       modified_doc = MdDoc.new(doc)
       modified_doc.convert()
       modified_doc.to_html
     end
+
   end
 
   class MdDoc
@@ -35,7 +37,6 @@ module Md2confl
     def to_html()
       @doc.to_xml
     end
-
 
     def new_node(name)
       Nokogiri::XML::Node.new name, @doc
@@ -56,24 +57,24 @@ module Md2confl
       end
     end
 
-    def convert_code(code_pre)
+    def convert_code(parent)
       # modify parent
-      code_pre.name = "ac:macro"
-      code_pre["ac:name"] = "code"
+      parent.name = "ac:macro"
+      parent["ac:name"] = "code"
       
       # add parameter
       lang_param = self.new_node "ac:parameter"
-      lang_param["lang"] = code_pre["lang"]
-      code_pre.add_child(lang_param)
+      lang_param["lang"] = parent["lang"]
+      parent.add_child(lang_param)
 
       # replace <code> => <ac:plain-text-body>
       code_body = self.new_node "ac:plain-text-body"
-      code_body.add_child(self.new_cdata(code_pre.text))
-      code_pre.add_child(code_body)
+      code_body.add_child(self.new_cdata(parent.text))
+      parent.add_child(code_body)
 
       # remove <code>
-      code_pre.search("code").remove
-      return code_pre
+      parent.search("code").remove
+      return parent
     end
 
   end
