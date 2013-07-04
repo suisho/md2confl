@@ -1,9 +1,9 @@
 <table>
-  <tr>
+  <th>
     <td>key</td>
     <td>value</td>
     <td>default</td>
-  </tr>
+  </th>
   <tr>
     <td>foo</td>
     <td>baz</td>

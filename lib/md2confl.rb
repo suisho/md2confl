@@ -117,12 +117,12 @@ module Md2confl
       table
     end
 
-    def array_to_table(array)
+    def array_to_table(array, head_row=0)
       table = self.new_node "table"
 
-      array.each{ |row|
-
-        row_node = self.new_node "tr"
+      array.each_with_index{ |row, ri|
+        node_name = ri == head_row ? "th" : "tr"
+        row_node = self.new_node node_name
         row.each{ |col|
           col_node = self.new_node "td"
           col_node.content = col
