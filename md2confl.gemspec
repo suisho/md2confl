@@ -6,10 +6,10 @@ require 'md2confl/version'
 Gem::Specification.new do |spec|
   spec.name          = "md2confl"
   spec.version       = Md2confl::VERSION
-  spec.authors       = ["TODO: Write your name"]
-  spec.email         = ["TODO: Write your email address"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.authors       = ["suisho"]
+  spec.email         = ["suisho000000@gmail.com"]
+  spec.description   = %q{convert md to confl}
+  spec.summary       = %q{convert}
   spec.homepage      = ""
   spec.license       = "MIT"
 
