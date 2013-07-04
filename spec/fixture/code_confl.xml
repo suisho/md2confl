@@ -1,0 +1,18 @@
+<ac:macro lang="json" ac:name="code">
+  <ac:parameter lang="json"/>
+  <ac:plain-text-body><![CDATA[{
+  {
+    "foo" : "baa",
+    "do" : true
+  }
+}
+]]></ac:plain-text-body>
+</ac:macro>
+
+<ac:macro lang="python" ac:name="code">
+  <ac:parameter lang="python"/>
+  <ac:plain-text-body><![CDATA[def foo:
+  def ee:
+    print a
+]]></ac:plain-text-body>
+</ac:macro>

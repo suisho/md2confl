@@ -5,10 +5,13 @@ source "http://rubygems.org"
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
+
+gem "nokogiri", "~> 1.6.0"
+gem "redcarpet", "~> 2.3.0"
+gem "github-markdown", "~> 0.5.3"
+
 group :development do
-  gem "rspec", "~> 2.8.0"
-  gem "rdoc", "~> 3.12"
-  gem "bundler", "~> 1.0.0"
+  gem "rspec", "~> 2.13.0"
+  gem "bundler", "~> 1.3.5"
   gem "jeweler", "~> 1.8.4"
-  gem "rcov", ">= 0"
 end
