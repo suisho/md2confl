@@ -3,6 +3,7 @@
 require 'github/markdown'
 require 'nokogiri'
 require 'redcarpet'
+require 'md2confl/version'
 require 'pp'
 
 module Md2confl

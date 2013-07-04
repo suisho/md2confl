@@ -1,10 +1,7 @@
-source "http://rubygems.org"
-# Add dependencies required to use your gem here.
-# Example:
-#   gem "activesupport", ">= 2.3.5"
+source 'https://rubygems.org'
 
-# Add dependencies to develop your gem here.
-# Include everything needed to run rake, tests, features, etc.
+# Specify your gem's dependencies in md2confl.gemspec
+gemspec
 
 gem "nokogiri", "~> 1.6.0"
 gem "redcarpet", "~> 2.3.0"
