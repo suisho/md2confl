@@ -32,10 +32,11 @@ module Md2confl
 
     def convert()
       self.convert_codes()
+      self.convert_table_lists()
     end
 
     def to_html()
-      @doc.to_xml
+      @doc.to_xml(:indent => 2)
     end
 
     def new_node(name)
@@ -45,6 +46,10 @@ module Md2confl
     def new_cdata(text)
       tmp_doc = Nokogiri::XML::Document.new
       tmp_doc.create_cdata text
+    end
+
+    def get_parent_text(node)
+      node.at_xpath(".//text()").text.strip
     end
 
 
@@ -75,6 +80,56 @@ module Md2confl
       # remove <code>
       parent.search("code").remove
       return parent
+    end
+
+    # table list置換
+    def convert_table_lists()
+      tables = @doc.css('ul').select{ |ul|
+        self.get_parent_text(ul.at_css("li")) == "table"
+      }
+
+      tables.each{ |table|
+        self.convert_table(table)
+      }
+    end
+
+    def convert_table(parent)
+      table_array = self.ul_to_array(parent)
+      table = self.array_to_table(table_array)
+      parent.replace(table)
+    end
+
+    def ul_to_array(parent)
+      table = []
+      # col = {} # TODO: colに名前付けれるようにする。
+      row_cnt = 0
+      col_cnt = 0
+      parent.css("ul ul").each{ |ul|
+        col_cnt = 0
+        table[row_cnt] = []
+        ul.css("li").each{ |li|
+          table[row_cnt][col_cnt] = self.get_parent_text(li)
+          col_cnt = col_cnt + 1
+        }
+        row_cnt = row_cnt + 1
+      }
+      table
+    end
+
+    def array_to_table(array)
+      table = self.new_node "table"
+
+      array.each{ |row|
+
+        row_node = self.new_node "tr"
+        row.each{ |col|
+          col_node = self.new_node "td"
+          col_node.content = col
+          row_node.add_child(col_node)
+        }
+        table.add_child(row_node)
+      }
+      table
     end
 
   end

@@ -1,0 +1,17 @@
+<table>
+  <tr>
+    <td>key</td>
+    <td>value</td>
+    <td>default</td>
+  </tr>
+  <tr>
+    <td>foo</td>
+    <td>baz</td>
+    <td>bar</td>
+  </tr>
+  <tr>
+    <td>foo</td>
+    <td>baz</td>
+    <td>bar</td>
+  </tr>
+</table>
