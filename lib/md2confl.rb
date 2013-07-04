@@ -5,31 +5,17 @@ require 'nokogiri'
 require 'redcarpet'
 require 'pp'
 
-=begin
-<ac:macro ac:name="code">
-  <ac:parameter ac:name="title">This is my title</ac:parameter>
-  <ac:parameter ac:name="theme">FadeToGrey</ac:parameter>
-  <ac:parameter ac:name="linenumbers">true</ac:parameter>
-  <ac:parameter ac:name="language">html/xml</ac:parameter>
-  <ac:parameter ac:name="firstline">0001</ac:parameter>
-  <ac:parameter ac:name="collapse">true</ac:parameter>
-  <ac:plain-text-body><![CDATA[<b>This is my code</b>]]></ac:plain-text-body>
-</ac:macro>
-=end
 module Md2confl
   class Converter
     
-    def initialize()
-    end
-
     # md to html doc
-    def get_doc(md)
+    def self.get_doc(md)
       html = GitHub::Markdown.render_gfm(md)
       Nokogiri::HTML::DocumentFragment.parse html
     end
 
-    def convert(md)
-      doc = self.get_doc(md)
+    def self.convert(md)
+      doc = Converter.get_doc(md)
       modified_doc = MdDoc.new(doc)
       modified_doc.convert()
       modified_doc.to_html
