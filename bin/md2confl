@@ -6,4 +6,5 @@ $:.unshift File.expand_path('lib', root)
 
 require "md2confl.rb"
 
-STDOUT.write(Md2confl::Converter.convert(ARGF.read) + "\n")
+
+STDOUT.write(Md2confl::Converter.convert(ARGV[0], ARGF.read) + "\n")

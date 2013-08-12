@@ -7,6 +7,7 @@ require 'md2confl/version'
 require 'pp'
 
 module Md2confl
+
   class Converter
     
     # md to html doc
@@ -15,10 +16,12 @@ module Md2confl
       Nokogiri::HTML::DocumentFragment.parse html
     end
 
+
     # main converter
-    def self.convert(md)
+    def self.convert(file_path, md)
+      
       doc = Converter.get_doc(md)
-      modified_doc = MdDoc.new(doc)
+      modified_doc = MdDoc.new(file_path, doc)
       modified_doc.convert()
       modified_doc.to_html
     end
@@ -26,14 +29,16 @@ module Md2confl
   end
 
   class MdDoc
-
-    def initialize(doc)
+    #file_pathはinludeリンク解決に利用。分離したい。
+    def initialize(file_path, doc)
+      @file_path = file_path
       @doc = doc
     end
 
     def convert()
       self.convert_codes()
       self.convert_table_lists()
+      self.include_links()
     end
 
     def to_html()
@@ -80,6 +85,7 @@ module Md2confl
 
       # remove <code>
       parent.search("code").remove
+
       return parent
     end
 
@@ -100,7 +106,6 @@ module Md2confl
       table = self.array_to_table(table_array)
       
       table_li.replace(table)
-      
     end
 
     def ul_to_array(parent)
@@ -142,5 +147,33 @@ module Md2confl
       table
     end
 
+    # include file 分離したい
+    def include_links()
+      links = @doc.css "a"
+      links.each { |link|
+        puts link
+        title = link.attribute("title")
+        if /^include/.match(title)
+          self.include_link(link)
+        end
+      }
+
+    end
+
+    def include_link(link)
+      # path
+      include_path = File.absolute_path(link.attribute("href"), File.dirname(@file_path))
+      
+      # read file
+      f = open include_path
+      include_source = f.read
+      f.close
+      
+      # create snippet
+      snippet = Converter.convert(include_path,include_source )  #再帰的になりそうこえー
+   
+      #replace
+      link.replace(snippet)
+    end
   end
 end
